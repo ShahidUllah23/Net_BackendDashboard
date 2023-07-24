@@ -1,44 +1,13 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
-import bbr from '../assets/images/bbr.png'
+import bbr from "../assets/images/bbr.png";
+import PosterImage from "./PosterImageComponent";
+import MovieTrailer from "./SeasonTrailerComponent";
+import InputField from "./InputField";
 
 const AddMovie = () => {
-    const [imagePreviewUrls, setImagePreviewUrls] = useState([]);
-    const [imagePreviewUrls2, setImagePreviewUrls2] = useState([]);
-    const [productImages, setProductImages] = useState([]);
-    const [productImages2, setProductImages2] = useState([]);
-    const [movieTrailer, setMovieTrailer] = useState(null);
-    const handleMovieTrailerUpload = (e) => {
-        const file = e.target.files[0];
-        setMovieTrailer(file);
-      };
-    const handleImageUpload = (e) => {
-        const files = Array.from(e.target.files);
-    
-        const imageUrls = files.map((file) => URL.createObjectURL(file));
-        setImagePreviewUrls((prevUrls) => [...prevUrls, ...imageUrls]);
-    
-        setProductImages((prevImages) => [...prevImages, ...files]);
-      };
-      const handleImageUpload2 = (e) => {
-        const files = Array.from(e.target.files);
-    
-        const imageUrls = files.map((file) => URL.createObjectURL(file));
-        setImagePreviewUrls2((prevUrls) => [...prevUrls, ...imageUrls]);
-    
-        setProductImages2((prevImages) => [...prevImages, ...files]);
-      };
-      const openFileDialog = () => {
-        const fileInput = document.getElementById("fileInput");
-        fileInput.click();
-      };
-      const openFileDialog2 = () => {
-        const fileInput2 = document.getElementById("fileInput2");
-        fileInput2.click();
-      };
-
   const data = [
     {
       img: bbr,
@@ -48,148 +17,56 @@ const AddMovie = () => {
       img: bbr,
       name: "Gul Chahat 2",
     },
-    // Add more items to the data array as needed
   ];
+  const [movieTrailer, setMovieTrailer] = useState(null);
+  const [posterImagePreviewUrls, setPosterImagePreviewUrls] = useState([]);
+  const [backdropImagePreviewUrls, setBackdropImagePreviewUrls] = useState([]);
+
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const imageUrls = files.map((file) => URL.createObjectURL(file));
+    setPosterImagePreviewUrls(imageUrls);
+  };
+
+  const handleImageUpload2 = (e) => {
+    const files = Array.from(e.target.files);
+    const imageUrls = files.map((file) => URL.createObjectURL(file));
+    setBackdropImagePreviewUrls(imageUrls);
+  };
+
+  const handleMovieTrailerUpload = (e) => {
+    const file = e.target.files[0];
+    setMovieTrailer(file);
+  };
+
   return (
     <div className="col-span-6 bg-[#000025] rounded-md  ">
       <div className="flex flex-col gap-6">
         <h1 className="text-xl font-bold text-white">Add Movie</h1>
         <div className="w-full grid md:grid-cols-2 gap-6">
-          <div className="w-full text-sm">
-            <label
-              htmlFor=""
-              className="text-border font-semibold text-gray-600"
-            >
-              Movie Title
-            </label>
-            <input
-              type="text"
-              required
-              placeholder="Game of throne"
-              className="w-full focus:outline-none rounded-md text-sm mt-2 p-5 border border-gray-600 text-white bg-black placeholder:text-gray-600"
-            />
-          </div>
-          <div className="w-full text-sm">
-            <label
-              htmlFor=""
-              className="text-border font-semibold text-gray-600"
-            >
-              Hours
-            </label>
-            <input
-              type="text"
-              required
-              placeholder="2Hr"
-              className="w-full focus:outline-none rounded-md text-sm mt-2 p-5 border border-gray-600 text-white bg-black placeholder:text-gray-600"
-            />
-          </div>
+          <InputField label="Movie Title" placeholder="Game of throne" type='text' />
+          <InputField label="Hours" placeholder="1" type='text' />
         </div>
         <div className="w-full grid md:grid-cols-2 gap-6">
-          <div className="w-full text-sm">
-            <label
-              htmlFor=""
-              className="text-border font-semibold text-gray-600"
-            >
-              Creater
-            </label>
-            <input
-              type="text"
-              required
-              placeholder="Creater"
-              className="w-full focus:outline-none rounded-md text-sm mt-2 p-5 border border-gray-600 text-white bg-black placeholder:text-gray-600"
-            />
-          </div>
-          <div className="w-full text-sm">
-            <label
-              htmlFor=""
-              className="text-border font-semibold text-gray-600"
-            >
-              Release Date
-            </label>
-            <input
-              type="text"
-              required
-              placeholder="2023"
-              className="w-full focus:outline-none rounded-md text-sm mt-2 p-5 border border-gray-600 text-white bg-black placeholder:text-gray-600"
-            />
-          </div>
+          <InputField label="Creator" placeholder="Creator" type='text' />
+          <InputField label="Release date" placeholder="2023" type='text' />
         </div>
         <div className="w-full grid md:grid-cols-2 gap-6">
-      
-        <div className="w-full " onClick={openFileDialog}>
-        <p className="text-border font-semibold pb-2 text-sm text-gray-500">
-              Poster Images
-            </p>
-          <div className="border-gray-600 px-6 py-6 border-2 border-dashed bg-black rounded-md cursor-pointer">
-            {imagePreviewUrls.length > 0 ? (
-              imagePreviewUrls.map((url, index) => (
-                <img
-                  key={index}
-                  src={url}
-                  alt={`Image ${index + 1}`}
-                  className="w-full mx-auto mb-4"
-                />
-              ))
-            ) : (
-              <div className="flex flex-col justify-center items-center">
-              <span className=" text-[#E50914] text-3xl">
-                    <AiOutlineCloudUpload />
-                  </span>
-                  <p className="text-sm mt-2 text-white">
-                    Drag Your image here
-                  </p>
-                  <em className="text-sm mt-1  text-border text-gray-600">
-                    (only .jpg and .png files will be accepted)
-                  </em>
-              </div>
-            )}
-          </div>
-          <input
-            type="file"
-            id="fileInput"
-            style={{ display: "none" }}
-            multiple
-            accept="image/*"
-            onChange={handleImageUpload}
+          {/* Poster Image */}
+          <PosterImage
+            title="Poster Images"
+            handleImageUpload={handleImageUpload}
+            previewUrls={posterImagePreviewUrls}
+            id="posterImage"
           />
-        </div>
-        <div className="w-full " onClick={openFileDialog2}>
-        <p className="text-border pb-2 font-semibold text-sm text-gray-500">
-              BackDrop Images
-            </p>
-          <div className="border-gray-600 px-6 py-6 border-2 border-dashed bg-black rounded-md cursor-pointer">
-            {imagePreviewUrls2.length > 0 ? (
-              imagePreviewUrls2.map((url, index) => (
-                <img
-                  key={index}
-                  src={url}
-                  alt={`Image ${index + 1}`}
-                  className="w-full mx-auto mb-4"
-                />
-              ))
-            ) : (
-              <div className=" flex flex-col justify-center items-center">
-              <span className=" text-[#E50914] text-3xl">
-                    <AiOutlineCloudUpload />
-                  </span>
-                  <p className="text-sm mt-2  text-white">
-                    Drag Your image here
-                  </p>
-                  <em className="text-sm mt-1 text-border text-gray-600">
-                    (only .jpg and .png files will be accepted)
-                  </em>
-              </div>
-            )}
-          </div>
-          <input
-            type="file"
-            id="fileInput2"
-            style={{ display: "none" }}
-            multiple
-            accept="image/*"
-            onChange={handleImageUpload2}
+
+          {/* Backdrop Image */}
+          <PosterImage
+            title="BackDrop Images"
+            handleImageUpload={handleImageUpload2}
+            previewUrls={backdropImagePreviewUrls}
+            id="backdropImage"
           />
-        </div>
         </div>
         <div className="text-sm w-full">
           <label htmlFor="" className="text-border font-semibold text-gray-500">
@@ -217,20 +94,7 @@ const AddMovie = () => {
               <option value="">Paid</option>
             </select>
           </div>
-          <div className="w-full text-sm">
-            <label
-              htmlFor=""
-              className="text-border font-semibold text-gray-500"
-            >
-              AgeLimit
-            </label>
-            <input
-              type="text"
-              required
-              placeholder="18+"
-              className="w-full focus:outline-none rounded-md text-sm mt-2 p-5 border border-gray-600 text-white bg-black placeholder:text-gray-600"
-            />
-          </div>
+          <InputField label="AgeLimit" placeholder="18+" type='text' />
         </div>
         <div className="text-sm w-full">
           <label htmlFor="" className="text-border font-semibold text-gray-500">
@@ -256,44 +120,14 @@ const AddMovie = () => {
             <option value="">Western</option>
           </select>
         </div>
-        <div className="flex flex-col gap-2">
-        <p className="text-border font-semibold text-sm text-gray-500">
-          Movie Trailer
-        </p>
-        <div className="w-full text-center">
-          {movieTrailer ? (
-            <video controls className=" mx-auto mb-4">
-              <source src={URL.createObjectURL(movieTrailer)} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          ) : (
-            <div
-              className="border-gray-600 px-6 py-8 border-2 border-dashed bg-black rounded-md cursor-pointer"
-              onClick={() => {
-                const fileInput = document.getElementById("movieTrailerInput");
-                fileInput.click();
-              }}
-            >
-              <span className="mx-auto flex justify-center flex-col items-center text-[#E50914] text-3xl">
-                <AiOutlineCloudUpload />
-              </span>
-              <p className="text-sm mt-2 text-white flex justify-center">
-                Drag Your video here
-              </p>
-              <em className="text-sm text-border text-gray-600 flex justify-center">
-                (only .mp4 files will be Accepted)
-              </em>
-            </div>
-          )}
-          <input
-            type="file"
-            id="movieTrailerInput"
-            style={{ display: "none" }}
-            accept="video/mp4"
-            onChange={handleMovieTrailerUpload}
+        <div className="w-full text-center relative pt-4">
+          <MovieTrailer
+            movieTrailer={movieTrailer}
+            handleMovieTrailerUpload={handleMovieTrailerUpload}
+            id="MovieTrailer"
+            title="Movie Trailer"
           />
         </div>
-      </div>
 
         <div className="w-full grid lg:grid-cols-2 gap-6 items-start">
           <button className="w-full py-4 bg-black border border-[#E50914] hover:bg-[#E50914] text-white rounded">
